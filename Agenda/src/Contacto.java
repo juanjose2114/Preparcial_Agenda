@@ -1,3 +1,5 @@
+
+
 public class Contacto {
 
     private String nombre;
@@ -12,7 +14,9 @@ public class Contacto {
         this.telefono = telefono;
         this.email = email;
         this.direccion = direccion;
+        System.out.println("Contacto creado:\n " + nombre + "\n" + alias + "\n" + telefono + "\n" + email + "\n" + direccion + "\n");
     }
+
     public String getNombre() {
         return nombre;
     }
