@@ -14,9 +14,18 @@ public class Reunion {
         this.describcion = describcion;
         this.fecha = fecha;
         this.hora = hora;
-        System.out.println(toString());
+        System.out.println("Reunion creada:\n" + toString());
     }
 
+    public void agregarContacto(Contacto contacto) {
+        contactos.add(contacto);
+    }
+    public ArrayList<Contacto> getContactos() {
+        return contactos;
+    }
+    public void setContactos(ArrayList<Contacto> contactos) {
+        this.contactos = contactos;
+    }
 
     public String getDistintivo() {
         return distintivo;
@@ -41,13 +50,6 @@ public class Reunion {
     }
     public void setHora(String hora) {
         this.hora = hora;
-    }
-
-    public ArrayList<Contacto> getContactos() {
-        return contactos;
-    }
-    public void setContactos(ArrayList<Contacto> contactos) {
-        this.contactos = contactos;
     }
 
     public String toString() {

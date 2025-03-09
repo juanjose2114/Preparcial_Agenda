@@ -14,7 +14,7 @@ public class Contacto {
         this.telefono = telefono;
         this.email = email;
         this.direccion = direccion;
-        System.out.println("Contacto creado:\n " + nombre + "\n" + alias + "\n" + telefono + "\n" + email + "\n" + direccion + "\n");
+        System.out.println("Contacto creado:\n" + toString());
     }
 
     public String getNombre() {
@@ -48,6 +48,7 @@ public class Contacto {
         this.direccion = direccion;
     }
 
+    @Override
     public String toString() {
         return "Nombre: " + nombre + "\nAlias: " + alias + "\nTelefono " + telefono + "\nEmail: " + email + "\nDireccion: " + direccion;
     }
