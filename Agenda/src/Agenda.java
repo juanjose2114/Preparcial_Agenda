@@ -6,12 +6,16 @@ public class Agenda {
     private static ArrayList<Contacto> contactos;
     private static ArrayList<Reunion> reuniones;
     private static ArrayList<Contacto> contactosReunion;
+    private static ArrayList<Grupo> grupos;
+    private static Contacto[] grupos5 ;
 
     public static void main(String[] args) {
 
         contactos = new ArrayList<>();
         reuniones = new ArrayList<>();
         contactosReunion = new ArrayList<>();
+        grupos = new ArrayList<>();
+        grupos5 = new Contacto[5];
 
         int opcion1 = 0;
         int opcion2;
@@ -33,6 +37,12 @@ public class Agenda {
         String descripcion;
         String fecha;
         String hora;
+
+        Grupo grupo;
+        //atributos de grupo
+        Categoria categoria = null;
+        String nombreg;
+        int tipo;
 
         boolean existe;
 
@@ -230,7 +240,6 @@ public class Agenda {
                                 }
                                 break;
                             case 5://Asistentes
-
                                 for (int k = 5; k != opcion3;) {
 
                                     opcion3 = 0;
@@ -343,8 +352,208 @@ public class Agenda {
                     break;
 
                 case 3://gestionar grupos
-                    for (int j = 0; j != opcion2;){
-                        j = 5;
+                    for (int j = 6; j != opcion2;){
+                        opcion2 = Integer.parseInt(JOptionPane.showInputDialog(null, """
+                                Grupos: \
+                                
+                                1.agregar grupo\
+                                
+                                2.revizar grupo\
+                                
+                                3.modificar grupo\
+                                
+                                4.eliminar grupo\
+                                
+                                5.contactos\
+                                
+                                6.Salir"""));
+                        switch (opcion2) {
+                            case 1://1.agregar grupo
+                                nombreg = JOptionPane.showInputDialog(null, "Nombre: ");
+                                tipo = Integer.parseInt(JOptionPane.showInputDialog(null, "ingrese la categoria del grupoo:\n1.Oficina\n2.Fiesta\n3.Amigos\n4.Familia"));
+                                switch (tipo) {
+                                    case 1:
+                                        categoria = Categoria.OFICINA;
+                                        break;
+                                    case 2:
+                                        categoria = Categoria.FIESTA;
+                                        break;
+                                    case 3:
+                                        categoria = Categoria.AMIGOS;
+                                        break;
+                                    case 4:
+                                        categoria = Categoria.FAMILIA;
+                                        break;
+                                    default:
+                                        JOptionPane.showMessageDialog(null, tipo + " no valid0");
+                                }
+                                if (categoria != null) {
+                                    grupo = new Grupo(nombreg, null, categoria);
+                                    existe = agregarGrupo(grupo);
+                                    if (existe) {
+                                        JOptionPane.showMessageDialog(null, "Grupo agregado");
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Grupo NO agregado");
+                                    }
+                                }
+                                break;
+                            case 2://2.revizar grupo
+                                opcion3 = Integer.parseInt(JOptionPane.showInputDialog(null, """
+                                        Menu: \
+                                        
+                                        1.Consultar un Grupo\
+                                        
+                                        2.Consultar lista de Grupos"""));
+
+                                switch (opcion3) {
+                                    case 1://Consultar un Grupo
+                                        nombreg = JOptionPane.showInputDialog(null, "ingrese el nombre del Grupo: ");
+                                        grupo = revizarGrupo(nombreg);
+                                        if (grupo != null) {
+                                            JOptionPane.showMessageDialog(null, grupo.toString());
+                                        }
+                                        break;
+                                    case 2://Consultar lista de Reuniones
+                                        for (Grupo g : grupos) {
+                                            if (g != null) {
+                                                System.out.println(g.toString());
+                                            }
+                                        }
+                                }
+                                break;
+                            case 3://3.modificar grupo
+                                nombre = JOptionPane.showInputDialog(null, "ingrese el nombre del grupo: ");
+                                existe = modificarGrupo(nombre);
+                                if (existe) {
+                                    JOptionPane.showMessageDialog(null, "grupo Modificada");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "grupo no Modificada");
+                                }
+                                break;
+                            case 4://4.eliminar grupo
+                                nombreg = JOptionPane.showInputDialog(null, "nombre del grupo a eliminar: ");
+                                existe = eliminarGrupo(nombreg);
+                                if (existe) {
+                                    JOptionPane.showMessageDialog(null, "Grupo Eliminada");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Grupo NO Eliminada");
+                                }
+                                break;
+                            case 5://contactos
+                                for (int k = 5; k != opcion3;) {
+
+                                    opcion3 = 0;
+
+                                    nombreg = JOptionPane.showInputDialog(null, "nombre del grupo a operar: ");
+                                    grupo = revizarGrupo(nombreg);
+
+                                    if (grupo != null) {
+                                        opcion3 = Integer.parseInt(JOptionPane.showInputDialog(null, """
+                                                contactos: \
+                                                
+                                                1.agregar contactos\
+                                                
+                                                2.revizar contactos\
+                                                
+                                                3.modificar contactos\
+                                                
+                                                4.eliminar contactos\
+                                                
+                                                5. Salir"""));
+
+
+                                        switch (opcion3) {
+                                            case 1://agregar contactos
+                                                JOptionPane.showMessageDialog(null, "Ingrese el nombre y telefono del contacto a agregar al grupo");
+                                                nombre = JOptionPane.showInputDialog(null, "Nombre: ");
+                                                telefono = JOptionPane.showInputDialog(null, "telefono: ");
+                                                contacto = revizarContacto(nombre, telefono);
+                                                if (contacto != null) {
+                                                     existe = grupo.agregarContacto(contacto);
+                                                     if (existe) {
+                                                         JOptionPane.showMessageDialog(null, "Contacto agregado");
+                                                     } else {
+                                                         JOptionPane.showMessageDialog(null, "Contacto NO agregado");
+                                                     }
+                                                } else {
+                                                    System.out.println("Contacto NO encontrado");
+                                                }
+                                                break;
+                                            case 2://revizar contactos
+                                                opcion3 = Integer.parseInt(JOptionPane.showInputDialog(null, """
+                                                        Menu Contactos del grupo: \
+                                                        
+                                                        1.Consultar un contacto\
+                                                        
+                                                        2.Consultar lista de contactos"""));
+
+                                                switch (opcion3) {
+                                                    case 1://1.Consultar un contacto
+                                                        JOptionPane.showMessageDialog(null, "Ingrese los datos del contacto a contultar");
+                                                        nombre = JOptionPane.showInputDialog(null, "Nombre: ");
+                                                        telefono = JOptionPane.showInputDialog(null, "telefono: ");
+                                                        Contacto contactoAux = revizarContactoGrupo(grupo, nombre, telefono);
+                                                        if (contactoAux != null) {
+                                                            JOptionPane.showMessageDialog(null, contactoAux.toString());
+                                                        } else {
+                                                            JOptionPane.showMessageDialog(null, "Contacto NO encontrado");
+                                                        }
+                                                        break;
+                                                    case 2://2.Consultar lista de contactos
+                                                        for (Contacto c : grupo.getContactos()) {
+                                                            if (c != null) {
+                                                                System.out.println("\n" + c.toString() + "\n");
+                                                                JOptionPane.showMessageDialog(null, "Imprimiendo en la terminal");
+                                                            }
+                                                        }
+                                                        break;
+                                                    default:
+                                                        System.out.println("Obcion " + opcion3 + " no valida");
+                                                }
+                                                break;
+                                            case 3://modificar contactos
+                                                JOptionPane.showMessageDialog(null, "Ingrese el nombre y telefono del contacto a modifiar a la reunion");
+                                                nombre = JOptionPane.showInputDialog(null, "Nombre: ");
+                                                telefono = JOptionPane.showInputDialog(null, "telefono: ");
+                                                existe = modificarContactoGrupo(grupo, nombre, telefono);
+                                                if (existe) {
+                                                    JOptionPane.showMessageDialog(null, "Contacto modificado modificado");
+                                                } else {
+                                                    System.out.println("Reunion NO encontrada");
+                                                }
+                                                break;
+                                            case 4://eliminar contactos
+                                                JOptionPane.showMessageDialog(null, "Ingrese el nombre y telefono del contacto a eliminar");
+                                                nombre = JOptionPane.showInputDialog(null, "Nombre: ");
+                                                telefono = JOptionPane.showInputDialog(null, "telefono: ");
+                                                existe = eliminarContactoGrupo(grupo, nombre, telefono);
+                                                if (existe) {
+                                                    JOptionPane.showMessageDialog(null, "Contacto Eliminado");
+                                                } else {
+                                                    JOptionPane.showMessageDialog(null, "Contacto NO Eliminado");
+                                                }
+                                                break;
+                                            case 5://salir
+                                                JOptionPane.showMessageDialog(null, "Saliendo a menu grupos");
+                                                break;
+                                            default://otros
+                                                break;
+                                        }
+                                    } else{
+                                        opcion3 = Integer.parseInt(JOptionPane.showInputDialog(null, "grupo no encontrado\nSalir? preciona 1"));
+                                        opcion3 += 4;
+                                    }
+                                    System.out.println(salto);
+                                }
+
+                            case 6://salir
+                                JOptionPane.showMessageDialog(null, "Saliendo al menu");
+                                break;
+                            default://otros
+                                System.out.println("Obcion " + opcion1 + " no valida");
+                                break;
+                        }
+                        System.out.println(salto);
                     }
                     break;
 
@@ -508,7 +717,115 @@ public class Agenda {
         }
         return eliminado;
     }
+
     //CRUD grupos
+    private static boolean agregarGrupo(Grupo grupo) {
+        boolean agregado = false;
+        Grupo g = revizarGrupo(grupo.getNombre());
+        if (g == null) {
+            grupos.add(grupo);
+            agregado = true;
+        } else {
+            System.out.println("grupo NO Agregado");
+        }
+        return agregado;
+    }
+    private static Grupo revizarGrupo(String nombre) {
+        for (Grupo grupo : grupos) {
+            if (grupo.getNombre().equals(nombre)) {
+                return grupo;
+            }
+        }
+        return null;
+    }
+    private static boolean modificarGrupo(String nombre) {
+        boolean agregado = false;
+
+        Grupo grupo = revizarGrupo(nombre);
+        if (grupo != null) {
+            JOptionPane.showMessageDialog(null, "Ingrese los datos del grupo a modificar");
+            nombre = JOptionPane.showInputDialog(null, "Nombre: ");
+
+            Categoria categoria = null;
+            int tipo = Integer.parseInt(JOptionPane.showInputDialog(null, "ingrese la categoria del grupoo:\n1.Oficina\n2.Fiesta\n3.Amigos\n4.Familia"));
+            switch (tipo) {
+                case 1:
+                    categoria = Categoria.OFICINA;
+                    break;
+                case 2:
+                    categoria = Categoria.FIESTA;
+                    break;
+                case 3:
+                    categoria = Categoria.AMIGOS;
+                    break;
+                case 4:
+                    categoria = Categoria.FAMILIA;
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, tipo + " no valid0");
+            }
+            if (revizarReunion(nombre) == null) {
+                grupo.setNombre(nombre);
+                grupo.setCategoria(categoria);
+                System.out.println(grupo.toString());
+                agregado = true;
+            }
+        }
+        return agregado;
+    }
+    private static boolean eliminarGrupo(String nombre) {
+        boolean eliminado = false;
+        Grupo grupo = revizarGrupo(nombre);
+        if (grupo != null) {
+            if (grupo.getNombre().equals(nombre)) {
+                grupos.remove(grupo);
+                eliminado = true;
+            }
+        }
+        return eliminado;    }
+
+    private static Contacto revizarContactoGrupo(Grupo grupo, String nombre, String telefono) {
+        for (Contacto contacto : grupo.getContactos()) {
+            if (contacto.getNombre().equals(nombre)&&contacto.getTelefono().equals(telefono)) {
+                return contacto;
+            }
+        }
+        return null;
+    }
+    private static boolean modificarContactoGrupo(Grupo grupo, String nombre, String telefono) {
+        boolean agregado = false;
+        Contacto contacto = revizarContactoGrupo(grupo, nombre, telefono);
+        if (contacto != null) {
+            JOptionPane.showMessageDialog(null, "Ingrese los datos del contacto a editar");
+            nombre = JOptionPane.showInputDialog(null, "Nombre: ");
+            String alias = JOptionPane.showInputDialog(null, "Alias: ");
+            telefono = JOptionPane.showInputDialog(null, "Telefono: ");
+            String email = JOptionPane.showInputDialog(null, "Email: ");
+            String direccion = JOptionPane.showInputDialog(null, "direccion: ");
+
+            if (revizarContactoGrupo(grupo, nombre, telefono) == null) {
+                contacto.setNombre(nombre);
+                contacto.setAlias(alias);
+                contacto.setTelefono(telefono);
+                contacto.setEmail(email);
+                contacto.setDireccion(direccion);
+
+                agregado = true;
+            }
+        }
+        return agregado;
+    }
+    private static boolean eliminarContactoGrupo(Grupo grupo, String nombre, String telefono) {
+        boolean eliminado = false;
+        Contacto contacto = revizarContactoGrupo(grupo, nombre, telefono);
+        if (contacto != null) {
+            if (contacto.getNombre().equals(nombre) && contacto.getTelefono().equals(telefono)) {
+                contactos.remove(contacto);
+                eliminado = true;
+            }
+        }
+        return eliminado;
+    }
 
 }
 
